@@ -34,8 +34,8 @@ class WindowController(object):
     def get_focused_window_name(self):
         return self.adapter.get_focused_window_name()
 
-    def get_window_geometry(self, window_id):
-        return self.adapter.get_window_geometry(window_id)
+    def get_window_inner_geometry(self, window_id):
+        return self.adapter.get_window_inner_geometry(window_id)
 
     def _load_adapter(self):
         if sys.platform == "darwin":

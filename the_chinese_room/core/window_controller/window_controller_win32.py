@@ -38,7 +38,7 @@ class WindowControllerWin32(WindowController):
     def get_focused_window_name(self):
         return win32gui.GetWindowText(win32gui.GetForegroundWindow())
 
-    def get_window_geometry(self, window_id):
+    def get_window_inner_geometry(self, window_id):
         geometry = dict()
 
         x, y, width, height = win32gui.GetClientRect(window_id)

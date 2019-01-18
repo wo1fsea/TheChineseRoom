@@ -53,7 +53,7 @@ class WindowControllerDarwin(WindowController):
 
         return focused_window_id
 
-    def get_window_geometry(self, window_id):
+    def get_window_inner_geometry(self, window_id):
         geometry = dict()
 
         window_geometry = applescript.AppleScript('''

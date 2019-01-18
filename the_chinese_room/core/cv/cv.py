@@ -13,6 +13,7 @@ import cv2
 import numpy
 
 from . import cv_utils
+from the_chinese_room.utils.rect import Rect
 
 TEMPLATE_MATCH_THRESHOLD = 0.75
 HISTOGRAM_TEST_THRESHOLD = 0.5
@@ -57,7 +58,7 @@ class TemplateMatcher(object):
         filtered_regions = []
         for region in regions:
             hist = self._calc_hist(
-                image[region["top"]:region["bottom"] + 1, region["left"]:region["right"] + 1, :]
+                image[region.top:region.bottom, region.left:region.right, :]
             )
 
             if self._diff_hist(template_hist, hist) < self._histogram_test_threshold:
@@ -70,7 +71,7 @@ class TemplateMatcher(object):
         find all matched region
         :param image:
         :param template:
-        :return: regions, [{"left": int, "top": int, "width": int, "height": int}, ...]
+        :return: regions, [utils.rect.Rect(), ...]
         """
         regions = []
         image = cv_utils.pil_image_2_cv_image(image)
@@ -84,16 +85,10 @@ class TemplateMatcher(object):
         loc = numpy.where(result >= self._threshold)
         for y, x in zip(*loc):
             regions.append(
-                {
-                    "left": x,
-                    "top": y,
-                    "right": x + width - 1,
-                    "bottom": y + height - 1,
-                    "match_value": result[y][x]
-                }
+                Rect(x, y, width, height)
             )
 
-        regions.sort(key=lambda x: x["match_value"], reverse=True)
+        regions.sort(key=lambda rect: result[rect.y][rect.x], reverse=True)
         print(regions)
 
         if self._histogram_test:

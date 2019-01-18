@@ -21,13 +21,11 @@ class FrameGrabber(object):
     def grab(self, regions):
         """
         grab
-        :param regions: list of regions, [{"left": int, "top": int, "width": int, "height": int}, ...]
+        :param regions: list of regions, [utils.rect.Rect(), ...]
         :return: list of PIL images, []
         """
         monitor = self._mss.monitors[0]
 
-        left = monitor["left"]
-        top = monitor["top"]
         width = monitor["width"]
         height = monitor["height"]
 
@@ -36,23 +34,11 @@ class FrameGrabber(object):
         screen_shot_img = screen_shot_img.resize((width, height))
         imgs = [
             screen_shot_img.crop((
-                region["left"] - left,
-                region["top"] - top,
-                region["width"] + region["left"] - left,
-                region["height"] + region["top"] - top
+                region.left,
+                region.top,
+                region.right,
+                region.bottom
             ))
             for region in regions
         ]
         return imgs
-
-
-if __name__ == '__main__':
-    fg = FrameGrabber()
-    imgs = fg.grab(
-        [
-            {"left": -100, "top": 0, "width": 100, "height": 100},
-            {"left": 0, "top": 0, "width": 100, "height": 100}
-        ]
-    )
-    for img in imgs:
-        img.show()

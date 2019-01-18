@@ -11,7 +11,7 @@ Description:
 
 import importlib
 
-TEST_MODULE = "frame_grabber"
+TEST_MODULE = "template_matcher"
 
 if __name__ == '__main__':
     test_module = importlib.import_module("quick_test.%s" % TEST_MODULE)

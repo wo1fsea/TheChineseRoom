@@ -28,7 +28,7 @@ def mark_regions_in_pil_image(pil_image, regions):
     draw = ImageDraw.Draw(pil_image)
     for region in regions:
         draw.rectangle(
-            (region.left, region.top, region.right_inclusive, region.top_inclusive),
+            (region.left, region.top, region.right_inclusive, region.bottom_inclusive),
             outline="red"
         )
     return pil_image

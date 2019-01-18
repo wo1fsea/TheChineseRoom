@@ -12,6 +12,7 @@ Description:
 from the_chinese_room.core.frame_grabber import FrameGrabber
 from the_chinese_room.utils.rect import Rect
 
+
 def test():
     fg = FrameGrabber()
     imgs = fg.grab(

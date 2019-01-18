@@ -6,7 +6,7 @@ Author:
 Date:
     2019/1/17
 Description:
-    cv.py
+    template_matcher.py
 ----------------------------------------------------------------------------"""
 
 import cv2

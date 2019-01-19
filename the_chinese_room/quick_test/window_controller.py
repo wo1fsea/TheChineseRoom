@@ -20,6 +20,7 @@ def test():
     wc = window_controller.WindowController()
     w_name = wc.get_focused_window_name()
     w_id = wc.locate_window(w_name)
+    print(w_id)
     w_geometry = wc.get_window_inner_geometry(w_id)
     print("window_name", w_name)
     print("window_id", w_id)
@@ -33,12 +34,7 @@ def test():
     print("window_geometry", w_geometry)
 
     fg.grab([
-        {
-            "left": w_geometry["x"],
-            "top": w_geometry["y"],
-            "width": 10,
-            "height": 10,
-        }
+        w_geometry
     ])[0].show()
 
     wc.move_window(w_id, 10, 10)

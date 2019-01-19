@@ -25,7 +25,7 @@ class Rect(object):
 
     """
 
-    def __init__(self, x, y, w, h):
+    def __init__(self, x=0, y=0, w=0, h=0):
         self.x, self.y = x, y
         self.width, self.height = w, h
 

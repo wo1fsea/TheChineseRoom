@@ -19,8 +19,8 @@ class WindowControllerWin32(WindowController):
     def __init__(self):
         pass
 
-    def locate_window(self, name):
-        return win32gui.FindWindow(None, name)
+    def locate_window(self, title):
+        return win32gui.FindWindow(None, title)
 
     def move_window(self, window_id, x, y):
         x0, y0, x1, y1 = win32gui.GetWindowRect(window_id)
@@ -39,6 +39,12 @@ class WindowControllerWin32(WindowController):
 
     def get_focused_window_name(self):
         return win32gui.GetWindowText(win32gui.GetForegroundWindow())
+
+    def get_window_geometry(self, window_id):
+        x, y, width, height = win32gui.GetClientRect(window_id)
+        rect = Rect(x, y, width, height)
+
+        return rect
 
     def get_window_inner_geometry(self, window_id):
         x, y, width, height = win32gui.GetClientRect(window_id)

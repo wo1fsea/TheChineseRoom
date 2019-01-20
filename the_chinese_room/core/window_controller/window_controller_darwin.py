@@ -15,13 +15,48 @@ from the_chinese_room.utils.rect import Rect
 
 from .window_controller import WindowController
 
+APPLE_SCRIPT_LOCATE_WINDOW = """
+tell application "System Events" to tell processes
+    set names to name
+    set wins to (windows whose name is "{title}")
+end tell
+
+set pnames to {{}}
+repeat with n from 1 to length of names
+    if item n of wins is not {{}} then
+        copy item n of names to the end of pnames
+    end if
+end repeat
+
+if length of pnames is not 0 then
+    return item 1 of pnames
+else
+    return ""
+end if
+"""
+
+APPLE_SCRIPT_FOCUS_WINDOW_NAME = """
+tell application "System Events"
+    set titles to title of the windows of (first application process whose frontmost is true)
+end tell
+
+if length of titles is not 0 then
+    return item 1 of titles 
+else
+    return ""
+end if
+
+"""
+
 
 class WindowControllerDarwin(WindowController):
     def __init__(self):
         pass
 
-    def locate_window(self, name):
-        return name
+    def locate_window(self, title):
+        # names = applescript.run(APPLE_SCRIPT_LOCATE_WINDOW.format(title=title)).out
+        # return names
+        return title
 
     def move_window(self, window_id, x, y):
         applescript.run('''
@@ -53,10 +88,9 @@ class WindowControllerDarwin(WindowController):
                 return title of first application process whose frontmost is true
             end tell
         ''').out
-
         return focused_window_id
-
-    def get_window_inner_geometry(self, window_id):
+    
+    def get_window_geometry(self, window_id):
         window_geometry = applescript.run('''
             tell application "System Events" to tell process "{window_id}"
                 return get size of window 1
@@ -74,3 +108,6 @@ class WindowControllerDarwin(WindowController):
         x, y = map(int, window_information.split(","))
 
         return Rect(x, y, width, height)
+
+    def get_window_inner_geometry(self, window_id):
+        raise NotImplementedError()

@@ -21,7 +21,7 @@ def test():
     w_name = wc.get_focused_window_name()
     w_id = wc.locate_window(w_name)
     print(w_id)
-    w_geometry = wc.get_window_inner_geometry(w_id)
+    w_geometry = wc.get_window_geometry(w_id)
     print("window_name", w_name)
     print("window_id", w_id)
     print("window_geometry", w_geometry)
@@ -30,7 +30,7 @@ def test():
     print("resize")
     time.sleep(1)
 
-    w_geometry = wc.get_window_inner_geometry(w_id)
+    w_geometry = wc.get_window_geometry(w_id)
     print("window_geometry", w_geometry)
 
     fg.grab([
@@ -40,5 +40,5 @@ def test():
     wc.move_window(w_id, 10, 10)
     time.sleep(1)
 
-    w_geometry = wc.get_window_inner_geometry(w_id)
+    w_geometry = wc.get_window_geometry(w_id)
     print("window_geometry", w_geometry)

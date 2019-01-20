@@ -12,7 +12,7 @@ Description:
 import time
 import json
 
-from utils.singleton import Singleton
+from the_chinese_room.utils.singleton import Singleton
 
 DEFAULT_BACKEND = "pynput"
 

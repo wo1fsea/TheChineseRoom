@@ -16,8 +16,11 @@ class WindowController(object):
     def __init__(self):
         self.adapter = self._load_adapter()()
 
-    def locate_window(self, title):
-        return self.adapter.locate_window(title)
+    def locate_window_by_pid(self, pid):
+        return self.adapter.locate_window_by_pid(pid)
+
+    def locate_window_by_title(self, title):
+        return self.adapter.locate_window_by_title(title)
 
     def move_window(self, window_id, x, y):
         self.adapter.move_window(window_id, x, y)

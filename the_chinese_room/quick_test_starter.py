@@ -11,7 +11,7 @@ Description:
 
 import importlib
 
-TEST_MODULE = "window_controller"
+TEST_MODULE = "first_auto_test_darwin"
 
 if __name__ == '__main__':
     test_module = importlib.import_module("quick_test.%s" % TEST_MODULE)

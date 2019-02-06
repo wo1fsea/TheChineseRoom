@@ -16,8 +16,11 @@ class WindowController(object):
     def __init__(self):
         self.adapter = self._load_adapter()()
 
-    def locate_window(self, name):
-        return self.adapter.locate_window(name)
+    def locate_window_by_pid(self, pid):
+        return self.adapter.locate_window_by_pid(pid)
+
+    def locate_window_by_title(self, title):
+        return self.adapter.locate_window_by_title(title)
 
     def move_window(self, window_id, x, y):
         self.adapter.move_window(window_id, x, y)
@@ -33,6 +36,9 @@ class WindowController(object):
 
     def get_focused_window_name(self):
         return self.adapter.get_focused_window_name()
+
+    def get_window_geometry(self, window_id):
+        return self.adapter.get_window_geometry(window_id)
 
     def get_window_inner_geometry(self, window_id):
         return self.adapter.get_window_inner_geometry(window_id)

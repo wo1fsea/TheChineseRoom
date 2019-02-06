@@ -15,9 +15,9 @@ from threading import Thread
 from pynput import keyboard, mouse
 
 from .keys import Keyboard, Mouse
-from core.input_controller.input_recorder import InputRecorder, Logger, InputEvent
-from core.input_controller.input_controller_pynput import KEYBOARD_MAP, MOUSE_MAP
-from core.input_controller import InputController
+from .input_recorder import InputRecorder, Logger, InputEvent
+from .input_controller_pynput import KEYBOARD_MAP, MOUSE_MAP
+from .input_controller import InputController
 
 KEYBOARD_REVERSE_MAP = {v: k for k, v in KEYBOARD_MAP.items()}
 MOUSE_REVERSE_MAP = {v: k for k, v in MOUSE_MAP.items()}

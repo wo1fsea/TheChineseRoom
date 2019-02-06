@@ -27,5 +27,8 @@ def pil_image_2_cv_image_gray(pil_image):
 def mark_regions_in_pil_image(pil_image, regions):
     draw = ImageDraw.Draw(pil_image)
     for region in regions:
-        draw.rectangle((region["left"], region["top"], region["right"], region["bottom"]), outline="red")
+        draw.rectangle(
+            (region.left, region.top, region.right_inclusive, region.bottom_inclusive),
+            outline="red"
+        )
     return pil_image

@@ -15,8 +15,8 @@ from threading import Thread
 from pykeyboard import PyKeyboardEvent
 from pymouse import PyMouseEvent
 
-from core.input_controller.input_recorder import InputRecorder
-from core.input_controller.input_controller_pyuserinput import PYUSERINPUT_KEYBOARD_MAP, PYUSERINPUT_MOUSE_MAP
+from .input_recorder import InputRecorder
+from .input_controller_pyuserinput import PYUSERINPUT_KEYBOARD_MAP, PYUSERINPUT_MOUSE_MAP
 
 PYUSERINPUT_KEYBOARD_REVERSE_MAP = {v: k for k, v in PYUSERINPUT_KEYBOARD_MAP.items()}
 PYUSERINPUT_MOUSE_MAP = {v: k for k, v in PYUSERINPUT_MOUSE_MAP.items()}

@@ -9,7 +9,7 @@ Description:
     input_controller.py
 ----------------------------------------------------------------------------"""
 
-from utils.singleton import Singleton
+from the_chinese_room.utils.singleton import Singleton
 from .keys import Mouse
 
 DEFAULT_BACKEND = "pynput"

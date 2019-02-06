@@ -11,48 +11,41 @@ Description:
 
 import mss
 from PIL import Image
+from the_chinese_room.utils.singleton import Singleton
 
 
-class FrameGrabber(object):
-    def __init__(self):
-        super(FrameGrabber, self).__init__()
-        self._mss = mss.mss()
+class FrameGrabber(Singleton):
+	"""
+	frame grabber
+	"""
 
-    def grab(self, regions):
-        """
-        grab
-        :param regions: list of regions, [{"left": int, "top": int, "width": int, "height": int}, ...]
-        :return: list of PIL images, []
-        """
-        monitor = self._mss.monitors[0]
+	def __init__(self):
+		super(FrameGrabber, self).__init__()
+		self._mss = mss.mss()
 
-        left = monitor["left"]
-        top = monitor["top"]
-        width = monitor["width"]
-        height = monitor["height"]
+	def grab(self, regions):
+		"""
+		grab
+		:param regions: list of regions, [utils.rect.Rect(), ...]
+		:return: list of PIL images, []
+		"""
+		monitor = self._mss.monitors[0]
 
-        screen_shot = self._mss.grab(monitor)
-        screen_shot_img = Image.frombytes('RGB', screen_shot.size, screen_shot.rgb)
-        screen_shot_img = screen_shot_img.resize((width, height))
-        imgs = [
-            screen_shot_img.crop((
-                region["left"] - left,
-                region["top"] - top,
-                region["width"] + region["left"] - left,
-                region["height"] + region["top"] - top
-            ))
-            for region in regions
-        ]
-        return imgs
+		width = monitor["width"]
+		height = monitor["height"]
+		left = monitor["left"]
+		top = monitor["top"]
 
-
-if __name__ == '__main__':
-    fg = FrameGrabber()
-    imgs = fg.grab(
-        [
-            {"left": -100, "top": 0, "width": 100, "height": 100},
-            {"left": 0, "top": 0, "width": 100, "height": 100}
-        ]
-    )
-    for img in imgs:
-        img.show()
+		screen_shot = self._mss.grab(monitor)
+		screen_shot_img = Image.frombytes('RGB', screen_shot.size, screen_shot.rgb)
+		screen_shot_img = screen_shot_img.resize((width, height))
+		imgs = [
+			screen_shot_img.crop((
+				region.left - left,
+				region.top - top,
+				region.right - left,
+				region.bottom - top
+			))
+			for region in regions
+		]
+		return imgs

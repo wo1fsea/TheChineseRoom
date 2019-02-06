@@ -3,3 +3,6 @@ pillow
 numpy
 opencv-python
 py-applescript
+pynput
+pyuserinput
+pyautogui

@@ -83,6 +83,10 @@ class Rect(object):
     def area(self):
         return self.width * self.height
 
+    @property
+    def center(self):
+        return self.left + self.width / 2, self.top + self.height / 2
+
     def clone(self):
         return Rect(self.x, self.y, self.width, self.height)
 
@@ -91,6 +95,10 @@ class Rect(object):
                     self.y >= rect.y + rect.height or
                     self.x + self.width <= rect.x or
                     self.y + self.height <= rect.y)
+
+    def contains_point(self, point):
+        return (self.left <= point[0] < self.right and
+                self.top <= point[1] < self.bottom)
 
     def __contains__(self, rect):
         return (self.x <= rect.x and

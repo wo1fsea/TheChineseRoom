@@ -21,6 +21,9 @@ class ProcessController(Singleton):
     def start_progress(self, path):
         return subprocess.Popen(path)
 
+    def kill(self, pid):
+        psutil.Process(pid).kill()
+
     def get_pid_by_name(self, name):
         for p in psutil.process_iter():
             if p.name() == name:

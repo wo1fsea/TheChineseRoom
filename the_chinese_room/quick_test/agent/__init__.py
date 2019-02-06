@@ -4,15 +4,9 @@ Author:
     Huang Quanyong (wo1fSea)
     quanyongh@foxmail.com
 Date:
-    2019/1/19
+    2019/2/6
 Description:
-    quick_test_starter.py
+    __init__.py
 ----------------------------------------------------------------------------"""
 
-import importlib
-
-TEST_MODULE = "agent"
-
-if __name__ == '__main__':
-    test_module = importlib.import_module("quick_test.%s" % TEST_MODULE)
-    test_module.test()
+from .agent import test

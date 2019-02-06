@@ -27,7 +27,7 @@ class InputController(Singleton):
         self._adapter.key_release(key)
 
     def key_tap(self, key):
-        self.key_tap(key)
+        self._adapter.key_tap(key)
 
     def mouse_press(self, button=Mouse.BUTTON_LEFT, position=(None, None)):
         self._adapter.mouse_press(button, position)

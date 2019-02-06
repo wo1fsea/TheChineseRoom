@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """----------------------------------------------------------------------------
 Author:
-	Huang Quanyong
-	gzhuangquanyong@corp.netease.com
+    Huang Quanyong (wo1fSea)
+    quanyongh@foxmail.com
 Date:
-	2019/1/23
+    2019/2/5
 Description:
-	process_controller
+    process_controller.py
 ----------------------------------------------------------------------------"""
 
 import psutil
@@ -15,16 +15,16 @@ from the_chinese_room.utils.singleton import Singleton
 
 
 class ProcessController(Singleton):
-	def __init__(self):
-		pass
+    def __init__(self):
+        pass
 
-	def start_progress(self, path):
-		return subprocess.Popen(path)
+    def start_progress(self, path):
+        return subprocess.Popen(path)
 
-	def get_pid_by_name(self, name):
-		for p in psutil.process_iter():
-			if p.name() == name:
-				return p.pid
+    def get_pid_by_name(self, name):
+        for p in psutil.process_iter():
+            if p.name() == name:
+                return p.pid
 
-	def list_process_names(self):
-		return tuple(p.name() for p in psutil.process_iter())
+    def list_process_names(self):
+        return tuple(p.name() for p in psutil.process_iter())

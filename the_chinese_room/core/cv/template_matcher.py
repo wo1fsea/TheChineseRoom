@@ -46,7 +46,6 @@ class TemplateMatcher(object):
         )
 
     def _diff_hist(self, hist0, hist1):
-        print(abs(hist0 - hist1).sum())
         return abs(hist0 - hist1).sum()
 
     def _histogram_test_filter(self, image, template, regions):

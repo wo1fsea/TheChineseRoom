@@ -22,10 +22,11 @@ from PIL import Image
 
 class Agent(object):
     """
-
+    Auto Agent
     """
 
     CHECK_INTERVAL = 0.1
+    PROGRAM_START_WAITING_TIME = 1.
 
     def __init__(self):
         self.host_window_id = None
@@ -49,8 +50,14 @@ class Agent(object):
     def start_host_program(self, path):
         assert self.host_window_id is None, "already has a host window"
         p = self.pc.start_progress(path)
+        self.sleep(self.PROGRAM_START_WAITING_TIME)
         self.host_pid = p.pid
         self.host_window_id = self.wc.locate_window_by_pid(p.pid)
+
+    def set_host_program(self, pid):
+        assert self.host_window_id is None, "already has a host window"
+        self.host_pid = pid
+        self.host_window_id = self.wc.locate_window_by_pid(pid)
 
     def kill_host_program(self):
         self.pc.kill(self.host_pid)
@@ -129,6 +136,7 @@ class Agent(object):
         return regions
 
     def click_on_template(self, template_image, button=Mouse.BUTTON_LEFT, center_offset=(0, 0), timeout=0):
+        self._focus_host_window()
         template_image = self._load_image(template_image)
 
         start_time = time.time()
@@ -138,7 +146,7 @@ class Agent(object):
             if regions:
                 region = regions[0]
                 position = region.center
-                position = (position[0] + center_offset[0], position[1] + center_offset[1])
+                position = (int(position[0] + center_offset[0]), int(position[1] + center_offset[1]))
                 self.mouse_click(button, position)
                 return True
 

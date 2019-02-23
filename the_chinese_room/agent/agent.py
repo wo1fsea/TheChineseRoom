@@ -26,7 +26,7 @@ class Agent(object):
     """
 
     CHECK_INTERVAL = 0.1
-    PROGRAM_START_WAITING_TIME = 1.
+    PROGRAM_START_WAITING_TIME = 3.
 
     def __init__(self):
         self.host_window_id = None
@@ -47,17 +47,21 @@ class Agent(object):
         assert self.host_window_id, "has no host window"
         self.region = self.wc.get_window_geometry(self.host_window_id)
 
-    def start_host_program(self, path):
+    def start_host_program(self, path, timeout=PROGRAM_START_WAITING_TIME):
         assert self.host_window_id is None, "already has a host window"
         p = self.pc.start_progress(path)
         self.sleep(self.PROGRAM_START_WAITING_TIME)
         self.host_pid = p.pid
-        self.host_window_id = self.wc.locate_window_by_pid(p.pid)
+
+        self.host_window_id = self.try_until_timeout(lambda: self.wc.locate_window_by_pid(p.pid), timeout)
+
+        assert self.host_window_id, "can not find window"
 
     def set_host_program(self, pid):
         assert self.host_window_id is None, "already has a host window"
         self.host_pid = pid
         self.host_window_id = self.wc.locate_window_by_pid(pid)
+        assert self.host_window_id, "can not find window"
 
     def kill_host_program(self):
         self.pc.kill(self.host_pid)
@@ -80,6 +84,7 @@ class Agent(object):
         self.ic.key_tap(key)
 
     def type_text(self, text):
+        # TODO: type_text
         raise NotImplementedError()
 
     def mouse_press(self, button=Mouse.BUTTON_LEFT, position=(None, None)):
@@ -139,46 +144,46 @@ class Agent(object):
         self._focus_host_window()
         template_image = self._load_image(template_image)
 
+        regions = self.try_until_timeout(lambda: self.find_template(template_image), timeout)
+        if regions:
+            region = regions[0]
+            position = region.center
+            position = (int(position[0] + center_offset[0]), int(position[1] + center_offset[1]))
+            self.mouse_click(button, position)
+            return True
+        else:
+            return False
+
+    def sleep(self, second):
+        time.sleep(second)
+
+    def try_until_timeout(self, func, timeout):
         start_time = time.time()
 
         while True:
-            regions = self.find_template(template_image)
-            if regions:
-                region = regions[0]
-                position = region.center
-                position = (int(position[0] + center_offset[0]), int(position[1] + center_offset[1]))
-                self.mouse_click(button, position)
-                return True
+            result = func()
+            if result:
+                return result
 
             if time.time() - start_time > timeout:
                 break
 
             self.sleep(self.CHECK_INTERVAL)
 
-        return False
-
-    def sleep(self, second):
-        time.sleep(second)
+        return None
 
     def check_pixel(self, position, color, timeout=0):
-        pass
+        # TODO: check_pixel
+        raise NotImplementedError()
 
     def check_template(self, template_image, region=None, timeout=0):
         template_image = self._load_image(template_image)
         if region is None:
             region = self.region
 
-        start_time = time.time()
-
-        while True:
-            regions = self.find_template(template_image)
-            for r in regions:
-                if r in region:
-                    return True
-
-            if time.time() - start_time > timeout:
-                break
-
-            self.sleep(self.CHECK_INTERVAL)
-
-        return False
+        return bool(
+            self.try_until_timeout(
+                lambda: [r for r in self.find_template(template_image) if r in region],
+                timeout
+            )
+        )
